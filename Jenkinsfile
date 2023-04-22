@@ -13,13 +13,16 @@ pipeline {
 
         stage('Test Dockerfile') {
             steps {
-                sh "docker build -t iiitv-devops-capstone-test:${BUILD_NUMBER} ."
+                sh "docker build -t iamangangwar/iiitv-devops-capstone-test:${BUILD_NUMBER} ."
             }
         }
 
         stage('Build Image') {
             steps {
-                sh "docker build -t iamangangwar/iiitv-devops-capstone-test:${BUILD_NUMBER}"
+                script {
+                    sh "docker build -t iamangangwar/iiitv-devops-capstone-test:${BUILD_NUMBER} ."
+                    sh "docker build -t iamangangwar/iiitv-devops-capstone-test:latest ."
+                }
             }
         }
         
@@ -35,14 +38,9 @@ pipeline {
         
         stage('Deploy on Test Server') {
             stages {
-                stage('SCM Checkout') {
-                    steps {
-                        git 'https://github.com/iamangangwar/iiitv-devops-capstone-config.git'
-                    }
-                }
                 stage('Run Ansible Playbook') {
                     steps {
-                        ansiblePlaybook credentialsId: 'ansible-master', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'test-deploy.yml'
+                        ansiblePlaybook credentialsId: 'ansible-master', sudoUser:'root', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'test-deploy.yml'
                     }
                 }
             }

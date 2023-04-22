@@ -4,6 +4,7 @@
     docker_image:
       name: iamangangwar/test:latest
       state: present
+      source: pull
   - name: Run Container
     block:
     - name: Run Container
