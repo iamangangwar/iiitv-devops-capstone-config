@@ -1,0 +1,5 @@
+[test]
+test1 ansible_ssh_host=172.31.29.14
+
+[prod]
+prod1 ansible_ssh_host=172.31.20.64

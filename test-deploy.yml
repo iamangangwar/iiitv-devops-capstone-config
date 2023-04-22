@@ -1,0 +1,27 @@
+- hosts: test
+  tasks:
+  - name: Pull Docker Image
+    docker_image:
+      name: iamangangwar/test:latest
+      state: present
+  - name: Run Container
+    block:
+    - name: Run Container
+      docker_container:
+        name: test
+        image: iamangangwar/test:latest
+        state: started
+        ports:
+          - "80:80"
+    rescue:
+    - name: Remove Previous Container
+      docker_container:
+        name: test
+        state: absent
+    - name: Run Container
+      docker_container:
+        name: test
+        image: iamangangwar/test:latest
+        state: started
+        ports:
+          - "80:80"
