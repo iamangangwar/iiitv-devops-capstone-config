@@ -37,7 +37,7 @@ pipeline {
         }
         
         stage('Deploy on Production Server') {
-            stages {
+            steps {
                 script {
                     try {
                         sh "docker service create \
