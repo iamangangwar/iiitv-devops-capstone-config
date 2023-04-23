@@ -2,7 +2,7 @@
   tasks:
   - name: Pull Docker Image
     docker_image:
-      name: iamangangwar/test:latest
+      name: iamangangwar/iiitv-devops-capstone-test:latest
       state: present
       source: pull
   - name: Run Container
@@ -10,7 +10,7 @@
     - name: Run Container
       docker_container:
         name: test
-        image: iamangangwar/test:latest
+        image: iamangangwar/iiitv-devops-capstone-test:latest
         state: started
         ports:
           - "80:80"
@@ -22,7 +22,7 @@
     - name: Run Container
       docker_container:
         name: test
-        image: iamangangwar/test:latest
+        image: iamangangwar/iiitv-devops-capstone-test:latest
         state: started
         ports:
           - "80:80"

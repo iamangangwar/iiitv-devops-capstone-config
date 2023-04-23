@@ -1,0 +1,28 @@
+- hosts: test
+  tasks:
+  - name: Pull Docker Image
+    docker_image:
+      name: iamangangwar/iiitv-devops-capstone-prod:latest
+      state: present
+      source: pull
+  - name: Run Container
+    block:
+    - name: Run Container
+      docker_container:
+        name: test
+        image: iamangangwar/iiitv-devops-capstone-prod:latest
+        state: started
+        ports:
+          - "80:80"
+    rescue:
+    - name: Remove Previous Container
+      docker_container:
+        name: test
+        state: absent
+    - name: Run Container
+      docker_container:
+        name: test
+        image: iamangangwar/iiitv-devops-capstone-prod:latest
+        state: started
+        ports:
+          - "80:80"
