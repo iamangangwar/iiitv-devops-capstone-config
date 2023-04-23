@@ -11,7 +11,7 @@ pipeline {
             }
         }
 
-        stage('Test Dockerfile') {
+        stage('Test Test Branch Dockerfile') {
             when {
                 branch 'develop'
             }
@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Build Image') {
+        stage('Build Test Image') {
             when {
                 branch 'develop'
             }
@@ -32,7 +32,7 @@ pipeline {
             }
         }
         
-        stage('Upload Image') {
+        stage('Upload Test Image') {
             when {
                 branch 'develop'
             }
@@ -58,7 +58,7 @@ pipeline {
             }
         }
 
-        stage('Test Dockerfile') {
+        stage('Test Production Dockerfile') {
             when {
                 branch 'master'
             }
@@ -67,7 +67,7 @@ pipeline {
             }
         }
 
-        stage('Build Image') {
+        stage('Build Production Image') {
             when {
                 branch 'master'
             }
@@ -79,7 +79,7 @@ pipeline {
             }
         }
         
-        stage('Upload Image') {
+        stage('Upload Production Image') {
             when {
                 branch 'master'
             }
