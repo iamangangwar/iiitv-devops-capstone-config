@@ -13,7 +13,7 @@ pipeline {
 
         stage('Test Test Branch Dockerfile') {
             when {
-                branch 'develop'
+                branch 'origin/develop'
             }
             steps {
                 sh "docker build -t iamangangwar/iiitv-devops-capstone-test:${BUILD_NUMBER} ."
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build Test Image') {
             when {
-                branch 'develop'
+                branch 'origin/develop'
             }
             steps {
                 script {
@@ -34,7 +34,7 @@ pipeline {
         
         stage('Upload Test Image') {
             when {
-                branch 'develop'
+                branch 'origin/develop'
             }
             steps {
                 script {
@@ -47,7 +47,7 @@ pipeline {
         
         stage('Deploy on Test Server') {
             when {
-                branch 'develop'
+                branch 'origin/develop'
             }
             stages {
                 stage('Run Ansible Playbook') {
@@ -60,7 +60,7 @@ pipeline {
 
         stage('Test Production Dockerfile') {
             when {
-                branch 'master'
+                branch 'origin/master'
             }
             steps {
                 sh "docker build -t iamangangwar/iiitv-devops-capstone-prod:${BUILD_NUMBER} ."
@@ -69,7 +69,7 @@ pipeline {
 
         stage('Build Production Image') {
             when {
-                branch 'master'
+                branch 'origin/master'
             }
             steps {
                 script {
@@ -81,7 +81,7 @@ pipeline {
         
         stage('Upload Production Image') {
             when {
-                branch 'master'
+                branch 'origin/master'
             }
             steps {
                 script {
@@ -94,7 +94,7 @@ pipeline {
         
         stage('Deploy on Production Server') {
             when {
-                branch 'master'
+                branch 'origin/master'
             }
             steps {
                 script {
