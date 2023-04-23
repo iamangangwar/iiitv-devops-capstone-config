@@ -12,12 +12,18 @@ pipeline {
         }
 
         stage('Test Dockerfile') {
+            when {
+                branch 'develop'
+            }
             steps {
                 sh "docker build -t iamangangwar/iiitv-devops-capstone-test:${BUILD_NUMBER} ."
             }
         }
 
         stage('Build Image') {
+            when {
+                branch 'develop'
+            }
             steps {
                 script {
                     sh "docker build -t iamangangwar/iiitv-devops-capstone-test:${BUILD_NUMBER} ."
@@ -27,6 +33,9 @@ pipeline {
         }
         
         stage('Upload Image') {
+            when {
+                branch 'develop'
+            }
             steps {
                 script {
                     sh "docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}"
@@ -37,6 +46,9 @@ pipeline {
         }
         
         stage('Deploy on Test Server') {
+            when {
+                branch 'develop'
+            }
             stages {
                 stage('Run Ansible Playbook') {
                     steps {
@@ -45,6 +57,63 @@ pipeline {
                 }
             }
         }
+
+        stage('Test Dockerfile') {
+            when {
+                branch 'master'
+            }
+            steps {
+                sh "docker build -t iamangangwar/iiitv-devops-capstone-prod:${BUILD_NUMBER} ."
+            }
+        }
+
+        stage('Build Image') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    sh "docker build -t iamangangwar/iiitv-devops-capstone-prod:${BUILD_NUMBER} ."
+                    sh "docker build -t iamangangwar/iiitv-devops-capstone-prod:latest ."
+                }
+            }
+        }
+        
+        stage('Upload Image') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    sh "docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}"
+                    sh "docker push iamangangwar/iiitv-devops-capstone-prod:${BUILD_NUMBER}"
+                    sh "docker push iamangangwar/iiitv-devops-capstone-prod:latest"
+                }
+            }
+        }
+        
+        stage('Deploy on Production Server') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    try {
+                        sh "docker service create \
+                            --name site \
+                            --publish published=80,target=80 \
+                            --replicas 3 \
+                            iamangangwar/iiitv-devops-capstone-prod:latest"
+                    }
+                    catch(e) {
+                        sh "docker service update \
+                            --image iamangangwar/iiitv-devops-capstone-prod:latest \
+                            site"
+                    }
+                }
+            }
+        }
+
     }
     post {
         always {
