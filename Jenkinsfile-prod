@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Fetch Code') {
             steps {
-                git branch: 'develop', url: 'https://github.com/iamangangwar/iiitv-devops-capstone.git'
+                git branch: 'master', url: 'https://github.com/iamangangwar/iiitv-devops-capstone.git'
             }
         }
 
